@@ -10,44 +10,52 @@
     />
   </head>
   <body>
-    <div class="game-container">
-      <h1>Tic Tac Toe</h1>
-      <div id="gameStartOptions">
-        <label>
-          Who starts first?
-          <select id="startChoice">
-            <option value="player">Player</option>
-            <option value="computer">Computer</option>
-          </select>
-        </label>
-        <br />
-        <div id="symbolChoiceContainer">
-          <label>
-            Choose your symbol:
-            <select id="playerChoice">
-              <option value="X">X</option>
-              <option value="O">O</option>
+    <div class="frame-container">
+      <div class="game-container">
+        <h1>TIC TAC TOE</h1>
+        <div id="gameStartOptions">
+          <label id="starterChoice">
+            Starter
+            <select id="startChoice">
+              <option value="player">Player</option>
+              <option value="computer">Computer</option>
             </select>
           </label>
           <br />
+         <!--  
+          <div id="symbolChoiceContainer">
+            <label>
+              Choose symbol:
+              <select id="playerChoice">
+                <option value="X">X</option>
+                <option value="O">O</option>
+              </select>
+            </label>
+            <br />
+          </div> -->
+
+
+         
         </div>
-        <button id="startGameButton">Start Game</button>
-      </div>
+      
+        <div class="board">
+          <div data-index="0" class="cell"></div>
+          <div data-index="1" class="cell"></div>
+          <div data-index="2" class="cell"></div>
+          <div data-index="3" class="cell"></div>
+          <div data-index="4" class="cell"></div>
+          <div data-index="5" class="cell"></div>
+          <div data-index="6" class="cell"></div>
+          <div data-index="7" class="cell"></div>
+          <div data-index="8" class="cell"></div>
+        </div>
 
+        <h3 id="resultMessage">&nbsp;</h3>
 
-      <div class="board">
-        <div data-index="0" class="cell"></div>
-        <div data-index="1" class="cell"></div>
-        <div data-index="2" class="cell"></div>
-        <div data-index="3" class="cell"></div>
-        <div data-index="4" class="cell"></div>
-        <div data-index="5" class="cell"></div>
-        <div data-index="6" class="cell"></div>
-        <div data-index="7" class="cell"></div>
-        <div data-index="8" class="cell"></div>
+        <button id="reset">New Game</button>
       </div>
-      <button id="reset">New Game</button>
     </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
 </html>

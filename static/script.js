@@ -1,121 +1,156 @@
-document.addEventListener('DOMContentLoaded', function () {
+// The entire script waits for the DOM content to be loaded before executing.
+document.addEventListener("DOMContentLoaded", function () {
 
-    const startChoiceDropdown = document.getElementById('startChoice');
-    const symbolChoiceContainer = document.getElementById('symbolChoiceContainer');
-
-    // Initially set visibility based on the dropdown's default value
-    toggleSymbolChoice(startChoiceDropdown.value);
-
-    startChoiceDropdown.addEventListener('change', function() {
-        toggleSymbolChoice(startChoiceDropdown.value);
+    // Getting references to startChoiceDropdown.
+    const startChoiceDropdown = document.getElementById("startChoice");
+  
+    // Reset button functionality: Refreshes the page.
+    const resetButton = document.getElementById("reset");
+    resetButton.addEventListener("click", function () {
+      location.reload();
     });
-
-    function toggleSymbolChoice(value) {
-        if (value === 'computer') {
-            symbolChoiceContainer.style.display = 'none';
-        } else {
-            symbolChoiceContainer.style.display = 'block';
-        }
+  
+    // Handle initial dropdown's default value.
+    computerStartFirstHandler(startChoiceDropdown.value);
+  
+    // Attach event listener to dropdown for game start choice.
+    startChoiceDropdown.addEventListener("change", function () {
+      computerStartFirstHandler(startChoiceDropdown.value);
+    });
+  
+    // Determines action the computer starts first.
+    function computerStartFirstHandler(value) {
+      if (value === "computer") {
+        // If 'computer' is selected, start a new game with the computer playing first.
+        startNewGame(-1);
+      }
     }
-
-    const cells = document.querySelectorAll('.cell');
+  
+    // Reference to all cells in the tic-tac-toe board.
+    const cells = document.querySelectorAll(".cell");
     let currentGameId = null;
-
-    cells.forEach(cell => {
-        cell.addEventListener('click', function (e) {
-            if (!e.target.textContent) {
-                makeMove(e.target.dataset.index);
-                console.log('Clicked on cell:', e.target.dataset.index);
-            }
-        });
+  
+    // Attach click event listeners to each cell.
+    cells.forEach((cell) => {
+      cell.addEventListener("click", function (e) {
+        // Only proceed if cell is empty.
+        if (!e.target.textContent) {
+          makeMove(e.target.dataset.index);
+        }
+      });
     });
-
+  
+    // Handles a move on the board, either starting a new game or updating an existing one.
     function makeMove(index) {
-        if (!currentGameId) {
-            // If there's no game yet, start a new one
-            startNewGame(index);
-            console.log('Started a new game');
-        } else {
-            // If there's an ongoing game, make a move
-            updateGame(index);
-            console.log('Updated the game');
-        }
+      if (!currentGameId) {
+        startNewGame(index);
+      } else {
+        updateGame(index);
+      }
     }
-
+  
+    // Starts a new game, handing two senarios if computer or player plays first.
     function startNewGame(index) {
-        let board = '---------';
-        board = setMoveOnBoard(board, index, 'x'); // Assuming player is always 'x' for the first move
-        console.log('Starting a new game with board:', board);
-        fetch('/api/v1/games', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ board: board })
+      let board = "---------";
+  
+      // Set the first move if not initiated by computer (if initiated by computer, index will be -1).
+      if (index !== -1) {
+        mark = startChoiceDropdown.value === "computer" ? "o" : "x";
+        board = setMoveOnBoard(board, index, mark);
+      }
+  
+      // API call to start a new game.
+      fetch("/api/v1/games", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ board: board }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          currentGameId = data.id; // Storing the game's ID for future reference.
+          // Render the board UI and show game result message.
+          renderBoard(data.board);
         })
-        .then(response => response.json())
-        .then(data => {
-            currentGameId = data.id;
-            console.log('New game created with id:', currentGameId);
-            renderBoard(data.board);
-            console.log('Rendered the board');
-        })
-        .catch(error => console.error('Error starting a new game:', error));
+        .catch((error) => console.error("Error starting a new game:", error));
     }
-
-function updateGame(index) {
-    console.log('Initiating updateGame for index:', index);
-
-    fetch(`/api/v1/games/${currentGameId}`)
-    .then(response => {
-        console.log('Initial fetch response:', response);
-        return response.json();
-    })
-    .then(data => {
-        console.log('Received game data:', data);
-
-        let board = data.board;
-        console.log('Current board:', board);
-
-        board = setMoveOnBoard(board, index, 'x'); // Assuming player is always 'x' for the first move
-        console.log('Updated board:', board);
-
-        return fetch(`/api/v1/games/${currentGameId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ board: board })
-        });
-    })
-    .then(response => {
-        console.log('PUT response:', response);
-        return response.json();
-    })
-    .then(data => {
-        console.log('Received data after PUT request:', data);
-
-        if (data.board) {
+  
+    // Updates the game state after a move.
+    function updateGame(index) {
+      // Fetch current game state.
+      fetch(`/api/v1/games/${currentGameId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          let board = data.board;
+  
+          // Determine the mark ('x' or 'o') for the player.
+          mark = startChoiceDropdown.value === "computer" ? "o" : "x";
+          // then set the move on the board with the player's mark (o or x)
+          board = setMoveOnBoard(board, index, mark);
+  
+          // Update game state with the new board.
+          return fetch(`/api/v1/games/${currentGameId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ board: board }),
+          });
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          // Render updated board and show game result message.
+          if (data.board) {
             renderBoard(data.board);
-            console.log('Rendered the board');
-        } else {
-            console.error('No board data received after PUT request:', data);
+            updateGameResultMessage(data.status);
+          } else {
+            console.error("No board data received after PUT request:", data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error encountered during updateGame:", error);
+        });
+    }
+  
+    // Updates the displayed game result based on the game's status.
+    function updateGameResultMessage(status) {
+      let resultMessage = document.getElementById("resultMessage");
+      if (status !== "RUNNING") {
+        let displayedMessage = "";
+        switch (status) {
+          case "X_WON":
+            displayedMessage = "X WON!";
+            break;
+          case "O_WON":
+            displayedMessage = "O WON!";
+            break;
+          case "DRAW":
+            displayedMessage = "IT'S A DRAW!";
+            break;
         }
-    })
-    .catch(error => {
-        console.error('Error encountered during updateGame:', error);
-    });
-}
-
-
+        resultMessage.innerHTML = displayedMessage;
+      } else {
+        resultMessage.innerHTML = " ";
+      }
+    }
+  
+    // Helper function to set a move on a given board state.
     function setMoveOnBoard(board, index, move) {
-        let boardArray = Array.from(board);
-        boardArray[index] = move;
-    
-        let newBoard = boardArray.join('');
-        console.log('New board:', newBoard);
-        return newBoard;
+        
+        //convert board string to array for easier manipulation. I have tried with slice() method but seems a bit problematic. This one works fine.
+      let boardArray = Array.from(board);
+      boardArray[index] = move;
+      return boardArray.join("");
     }
-    
+  
+    // Renders the board based on a given board state.
     function renderBoard(board) {
-        cells.forEach((cell, index) => {
-            cell.textContent = board[index] === '-' ? '' : board[index];
-        });
+      cells.forEach((cell, index) => {
+        cell.textContent = board[index] === "-" ? "" : board[index];
+        // Set colors for each type of mark.
+        if (cell.textContent === "x") {
+          cell.style.color = "red";
+        } else {
+          cell.style.color = "green";
+        }
+      });
     }
-});
+  });
+  

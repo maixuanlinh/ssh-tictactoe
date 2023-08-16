@@ -114,7 +114,7 @@ def game_id(game_id):
 
     return make_response({'error': 'Method not allowed'}, 405)
 
-# Route to serve the main game interface - the index.html
+# Route to serve the main game interface - the index.html. This is to deploy a full stack app to Azure App Service.
 @app.route('/')
 def index():
     return render_template('index.html')
