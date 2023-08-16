@@ -1,11 +1,4 @@
-Build the Docker container.
+frontend code is written in Javascript, HTMl & CSS in the static and templates folders.
+No extra libraries have been used
 
-	make build
-
-Run the server.
-
-	make run
-
-Server is now running on Docker.
-
-	http://127.0.0.1:5555/api/v1/games
+Deployed live website in Azure (using the same backend logic in Python): https://sshtictactoe.azurewebsites.net/
