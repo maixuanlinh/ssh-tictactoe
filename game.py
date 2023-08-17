@@ -88,27 +88,26 @@ class Game(object):
             self.board = ''.join(tmp_board)
 
     def _check_winning_conditions(self):
-        # Check if someone won the game.
+    # Check if someone won the game.
 
+      board = list(self.board)
+    
+    # Check for a Win:
+      for cond in WIN_CONDITIONS:
+        marks = [board[index] for index in cond if board[index] in MARKS]
+        
+        if len(set(marks)) == 1 and len(marks) == 3:
+            # someone won!
+            if marks[0] == CROSS:
+                self.status = 'X_WON'
+            else:
+                self.status = 'O_WON'
+            return  # Exit the function after finding a win
+
+    # If we reach this point and there are no empty spots left, then it's a draw.
         if self.board.count('-') == 0:
-            # No moves left
-            self.status = 'DRAW'
-            return
+          self.status = 'DRAW'
 
-        board = list(self.board)
-        for cond in WIN_CONDITIONS:
-            marks = []
-            for index in cond:
-                mark = board[index]
-                if mark in MARKS:
-                    marks.append(mark)
-            if len(marks) == 3 and len(set(marks)) == 1:
-                # someone won!
-                if set(marks).pop() == CROSS:
-                    self.status = 'X_WON'
-                else:
-                    self.status = 'O_WON'
-                break
 
     def get_json(self):
         return json.dumps(
