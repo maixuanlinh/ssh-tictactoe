@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Basic Meta Information -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Page Title -->
     <title>Tic Tac Toe</title>
+    
+    <!-- Stylesheet Link -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
   </head>
   <body>
+    <!-- Main Frame Container for the Game -->
     <div class="frame-container">
+      <!-- Game Content Container -->
       <div class="game-container">
+        <!-- Game Title -->
         <h1>TIC TAC TOE</h1>
+        
+        <!-- Game Starting Options -->
         <div id="gameStartOptions">
           <label id="starterChoice">
             Starter
+            <!-- Dropdown to Choose Who Starts the Game -->
             <select id="startChoice">
               <option value="player">Player</option>
               <option value="computer">Computer</option>
             </select>
           </label>
-          <br />
-         
         </div>
         
+        <!-- Tic Tac Toe Board -->
         <div class="board">
           <div data-index="0" class="cell"></div>
           <div data-index="1" class="cell"></div>
@@ -37,12 +47,15 @@
           <div data-index="8" class="cell"></div>
         </div>
 
+        <!-- Message to Display Game Results -->
         <h3 id="resultMessage">&nbsp;</h3>
 
+        <!-- Button to Start a New Game -->
         <button id="reset">New Game</button>
       </div>
     </div>
 
+    <!-- JavaScript Logic for the Game -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
 </html>

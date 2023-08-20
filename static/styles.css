@@ -1,3 +1,4 @@
+/* Base Styles */
 body, html {
     height: 100%;
     margin: 0;
@@ -5,13 +6,23 @@ body, html {
     background-color: #f4f4f4;
 }
 
+/* Frame Styles */
+.frame-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Game Container Styles */
 .game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 100%;;
+    width: 100%;
     margin: 0 auto;
     padding: 25px;
     background-color: #fff;
@@ -19,42 +30,31 @@ body, html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.frame-container {
- 
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-  
- 
-}
-
+/* Typography Styles */
 h1 {
     font-weight: 700;
     font-size: 3rem;
     color: rgb(61, 61, 165);
     margin-bottom: 20px;
-
 }
 
-h3 {
+#resultMessage {
     font-weight: 900;
     font-size: 2rem;
     color: rgb(61, 61, 165);
     margin-bottom: 20px;
-
 }
 
+/* Board Styles */
 .board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 7px; /* set this to the border width */
+    gap: 7px;
     margin: 20px 0;
     background-color: #333;
 }
 
+/* Cell Styles */
 .cell {
     font-size: 3rem;
     font-weight: 900;
@@ -65,21 +65,29 @@ h3 {
     justify-content: center;
     background-color: #fff;
     cursor: pointer;
- 
     transition: background-color 0.3s ease;
 }
 
 .cell-image {
-    max-width: 40px; /* this will ensure the image does not exceed the cell size */
+    max-width: 40px;
     max-height: 40px;
 }
-
-
 
 .cell:hover {
     background-color: #f7f7f7;
 }
 
+/* Specific Cells */
+.cell[data-index="0"] { border-left: none; border-top: none; }
+.cell[data-index="1"] { border-top: none; }
+.cell[data-index="2"] { border-right: none; border-top: none; }
+.cell[data-index="3"] { border-left: none; }
+.cell[data-index="5"] { border-right: none; }
+.cell[data-index="6"] { border-bottom: none; border-left: none; }
+.cell[data-index="7"] { border-bottom: none; }
+.cell[data-index="8"] { border-bottom: none; border-right: none; }
+
+/* Button Styles */
 button {
     padding: 10px 15px;
     border: none;
@@ -95,103 +103,218 @@ button:hover {
     background-color: #555;
 }
 
-
-/* For the top-left cell */
-.cell[data-index="0"] {
-    border-left: none;
-    border-top: none;
-
-
-}
-
-/* For the top-middle cell */
-.cell[data-index="1"] {
- 
-    border-top: none;
-}
-
-
-/* For the top-right cell */
-.cell[data-index="2"] {
-    border-right: none;
-    border-top: none;
-
-}
-
-/* For the left-middle cell */
-.cell[data-index="3"] {
- 
-    border-left: none;
-}
-
-
-/* For the right-middle cell */
-.cell[data-index="5"] {
- 
-    border-right: none;
-}
-
-
-/* For the bottom-left cell */
-.cell[data-index="6"] {
-    border-bottom: none;
-    border-left: none;
-}
-
-/* For the bottom-middle cell */
-.cell[data-index="7"] {
- 
-    border-bottom: none;
-}
-/* For the bottom-right cell */
-.cell[data-index="8"] {
-    border-bottom: none;
-    border-right: none;
-}
-
-
+/* Game Options Styles */
 #gameStartOptions {
     display: flex;
     flex-direction: row;
-    
     align-items: top;
     justify-content: center;
     margin-bottom: 20px;
 }
 
-#starterChoice {
-    margin-right: 25px;
-}
+#starterChoice { margin-right: 25px; }
+#startGameButton { margin: 20px; }
+#reset { margin: 30px; }
 
+/* Media Queries */
 
-#startGameButton {
-    margin: 20px;
-}
-
-
-#reset {
-    margin: 30px;
-}
-/* Styles for larger screens */
+/* Larger Screens */
 @media screen and (min-width: 601px) {
     .game-container {
         max-width: 40%;
         height: 80%;
     }
-
     .frame-container {
         height: 100vh;
     }
-
-   
-
 }
 
-/* Styles for smaller screens */
+/* Smaller Screens (Width) */
 @media screen and (max-width: 600px) {
     .game-container {
-        max-width: 100%; /* Full width on small screens */
+        max-width: 100%;
     }
 }
 
+/* Smaller Screens (Height) */
+@media screen and (max-height: 600px) {
+    h1, #resultMessage {
+        font-weight: 900;
+        font-size: 2rem;
+        color: rgb(61, 61, 165);
+        margin-bottom: 10px;
+    }
 
+    .cell {
+        font-size: 2rem;
+        width: 80px;
+        height: 80px;
+    }
+
+    .board {
+        margin: 10px 0;
+    }
+
+    #reset { margin: 10px; }
+    .frame-container { height: 100vh; }
+}
+/* Base Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Frame Styles */
+.frame-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Game Container Styles */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Typography Styles */
+h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    color: rgb(61, 61, 165);
+    margin-bottom: 20px;
+}
+
+#resultMessage {
+    font-weight: 900;
+    font-size: 2rem;
+    color: rgb(61, 61, 165);
+    margin-bottom: 20px;
+}
+
+/* Board Styles */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin: 20px 0;
+    background-color: #333;
+}
+
+/* Cell Styles */
+.cell {
+    font-size: 3rem;
+    font-weight: 900;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cell-image {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.cell:hover {
+    background-color: #f7f7f7;
+}
+
+/* Specific Cells */
+.cell[data-index="0"] { border-left: none; border-top: none; }
+.cell[data-index="1"] { border-top: none; }
+.cell[data-index="2"] { border-right: none; border-top: none; }
+.cell[data-index="3"] { border-left: none; }
+.cell[data-index="5"] { border-right: none; }
+.cell[data-index="6"] { border-bottom: none; border-left: none; }
+.cell[data-index="7"] { border-bottom: none; }
+.cell[data-index="8"] { border-bottom: none; border-right: none; }
+
+/* Button Styles */
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: rgb(221, 192, 27);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Game Options Styles */
+#gameStartOptions {
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#starterChoice { margin-right: 25px; }
+#startGameButton { margin: 20px; }
+#reset { margin: 30px; }
+
+/* Media Queries */
+
+/* Larger Screens */
+@media screen and (min-width: 601px) {
+    .game-container {
+        max-width: 40%;
+        height: 80%;
+    }
+    .frame-container {
+        height: 100vh;
+    }
+}
+
+/* Smaller Screens (Width) */
+@media screen and (max-width: 600px) {
+    .game-container {
+        max-width: 100%;
+    }
+}
+
+/* Smaller Screens (Height) */
+@media screen and (max-height: 600px) {
+    h1, #resultMessage {
+        font-weight: 900;
+        font-size: 2rem;
+        color: rgb(61, 61, 165);
+        margin-bottom: 10px;
+    }
+
+    .cell {
+        font-size: 2rem;
+        width: 80px;
+        height: 80px;
+    }
+
+    .board {
+        margin: 10px 0;
+    }
+
+    #reset { margin: 10px; }
+    .frame-container { height: 100vh; }
+}
